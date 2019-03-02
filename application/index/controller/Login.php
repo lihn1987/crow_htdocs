@@ -70,7 +70,7 @@ class LoginStatu{
                 ])
                 ->request();
             $result = $result->toArray();
-            if(!array_key_exists("TotalCount", $result) || $result["TotalCount"] != 1){
+            if(!array_key_exists("TotalCount", $result) || $result["TotalCount"] == 0){
                 $rtn['result']="faild1";
             }else{
                 
