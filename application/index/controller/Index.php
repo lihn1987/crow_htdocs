@@ -2,6 +2,7 @@
 namespace app\index\controller;
 use think\Db;  
 require_once __DIR__."/ProductList.php";
+require_once __DIR__."/Login.php";
 class Index
 {
     public function index()
@@ -12,6 +13,31 @@ class Index
         $param = $_POST;
         $caller = new ProductList();
         echo json_encode($caller->GetProductList($param['page_idx'], $param['page_size']), JSON_UNESCAPED_UNICODE);
+    }
+    public function send_sms(){
+        $param = $_POST;
+        $caller = new LoginStatu();
+        echo json_encode($caller->SendSMS($_POST['tel']), JSON_UNESCAPED_UNICODE);
+    }
+    public function check_last_sms_code(){
+        $param = $_POST;
+        $caller = new LoginStatu();
+        echo json_encode($caller->CheckLatestSMSCode($param['tel'], $param['code']), JSON_UNESCAPED_UNICODE);
+    }
+    public function login(){
+        $param = $_POST;
+        $caller = new LoginStatu();
+        echo json_encode($caller->Login($param['tel'], $param['code'], $param['uid']), JSON_UNESCAPED_UNICODE);
+    }
+    public function check_state(){
+        $param = $_POST;
+        $caller = new LoginStatu();
+        echo json_encode($caller->ChackState($param['uid']), JSON_UNESCAPED_UNICODE);
+    }
+    public function login_out(){
+        $param = $_POST;
+        $caller = new LoginStatu();
+        echo json_encode($caller->LoginOut(), JSON_UNESCAPED_UNICODE);
     }
     
 }
