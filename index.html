@@ -20,6 +20,13 @@
         <td><textarea id="product_list_get_input" style="height:100px;width:100%"></textarea></td>
         <td><textarea id="product_list_get_out" style="height:100px;width:100%"></textarea></td>
         <td><button  id="product_list_get_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
+	</tr>
+	<tr>
+        <td>buy_product</td>
+        <td>购买产品</td>
+        <td><textarea id="buy_product_input" style="height:100px;width:100%"></textarea></td>
+        <td><textarea id="buy_product_out" style="height:100px;width:100%"></textarea></td>
+        <td><button  id="buy_product_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
     </tr>
 </table>
 
@@ -93,6 +100,28 @@
                 dataType: "text",
                 error: function (data) {
                     $("#product_list_get_out").val("调用失败");
+                }
+            });
+        });
+//buy_product
+		$("#buy_product_input").val(
+            '{\n'+
+			'   "product_id":1,\n'+
+            '   "count":1\n'+
+			'   "uid":4000\n'+
+            '}');
+        $("#buy_product_operator").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/public/index/index/buy_product",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: $.parseJSON($("#buy_product_input").val()),
+                success: function(data){
+                    $("#buy_product_out").val(data);
+                },
+                dataType: "text",
+                error: function (data) {
+                    $("#buy_product_out").val("调用失败");
                 }
             });
         });
@@ -198,6 +227,8 @@
                 }
             });
         });
+
+
     });
     </script>
 </body>

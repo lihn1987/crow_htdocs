@@ -2,6 +2,7 @@
 namespace app\index\controller;
 use think\Db;  
 use Think\Controller;
+require_once __DIR__."/Login.php";
 class ProductList{
     //添加一个商品信息
     public function GetProductList($page_idx, $page_size){
@@ -16,6 +17,68 @@ class ProductList{
             $rtn['data']=$res;
             $res = Db::query("select found_rows() as `count`");
             $rtn['all_count']=$res[0]['count'];
+        }catch(\Exception $e){
+            $rtn['result'] = $e->getMessage();
+        }
+        return $rtn;
+    }
+    public function BuyProduct($product_id, $count, $uid){
+        $caller = new LoginStatu();
+        $rtn['result'] = 'ok';
+        $rtn['data'] = '';
+        if($caller->ChackState($uid) != true){
+            $rtn['result']="权限错误";
+            return $rtn;
+        }
+      
+        //权限正确
+        try{
+            //锁表
+            Db::execute("lock tables user_list write, product_list write");
+            //计算用户资金
+            $res = Db::query("select * from user_list where `user_name`='{$_SESSION['tel']}'");
+            if(sizeof($res) != 1){
+                $rtn['result'] != "未找到用户";
+                return $rtn;
+            }
+            $wallet = $res[0]['wallet'];
+            $user_id = $res[0]['index'];
+            //计算产品价格
+            $res = Db::query("select * from product_list where `index`=$product_id");
+            if(sizeof($res) != 1){
+                $rtn['result'] != "未找到用户";
+                return $rtn;
+            }
+            $product_id = $res[0]['index'];
+            $price = $res[0]['price']*$count;
+            $product_count = $res[0]['count'];
+            
+
+            //判断产品数目是否够
+            if($product_count <=0 ){
+                $rtn["result"] = "剩余产品不足";
+                return $rtn;
+            }
+            //判断钱
+            if($wallet < $price){
+                //钱不够
+                $rtn["result"] = "账户余额不足";
+                return $rtn;
+            }
+            
+            //开始购买
+            Db::startTrans();
+            $wallet_now = $wallet-$price;
+            //更新钱包
+            Db::execute("update user_list set `wallet`='$wallet_now' where `user_name`='{$_SESSION['tel']}'");
+            //更新货物
+            $product_count = $product_count-1;
+            Db::execute("update product_list set `count`='$product_count' where `index`='$product_id'");
+            //为用户添加订单
+            $time = date("Ymd-His");
+            Db::execute("insert into order_list(`product_id`,`user_id`, `buy_time`, `is_history`, `is_paid`)
+            values($product_id,$user_id,'$time', '0', '1')");
+            Db::commit();
         }catch(\Exception $e){
             $rtn['result'] = $e->getMessage();
         }
