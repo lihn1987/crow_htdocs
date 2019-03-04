@@ -27,6 +27,13 @@
         <td><textarea id="buy_product_input" style="height:100px;width:100%"></textarea></td>
         <td><textarea id="buy_product_out" style="height:100px;width:100%"></textarea></td>
         <td><button  id="buy_product_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
+	</tr>
+	<tr>
+        <td>get_self_wallet</td>
+        <td>获取用户信息</td>
+        <td><textarea id="get_self_wallet_input" style="height:100px;width:100%"></textarea></td>
+        <td><textarea id="get_self_wallet_out" style="height:100px;width:100%"></textarea></td>
+        <td><button  id="get_self_wallet_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
     </tr>
 </table>
 
@@ -107,8 +114,8 @@
 		$("#buy_product_input").val(
             '{\n'+
 			'   "product_id":1,\n'+
-            '   "count":1\n'+
-			'   "uid":4000\n'+
+            '   "count":1,\n'+
+			'   "uid":123456\n'+
             '}');
         $("#buy_product_operator").click(function(){
             $.ajax({
@@ -125,7 +132,26 @@
                 }
             });
         });
-
+//
+		$("#get_self_wallet_input").val(
+            '{\n'+
+			'   "uid":123456\n'+
+            '}');
+        $("#get_self_wallet_operator").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/public/index/index/get_self_wallet",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: $.parseJSON($("#get_self_wallet_input").val()),
+                success: function(data){
+                    $("#get_self_wallet_out").val(data);
+                },
+                dataType: "text",
+                error: function (data) {
+                    $("#get_self_wallet_out").val("调用失败");
+                }
+            });
+        });
 		$("#send_sms_input").val(
             '{\n'+
 			'   "tel":"18108192376"\n'+

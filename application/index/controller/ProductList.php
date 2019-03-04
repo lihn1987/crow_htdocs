@@ -22,6 +22,7 @@ class ProductList{
         }
         return $rtn;
     }
+
     public function BuyProduct($product_id, $count, $uid){
         $caller = new LoginStatu();
         $rtn['result'] = 'ok';
@@ -55,7 +56,7 @@ class ProductList{
             
 
             //判断产品数目是否够
-            if($product_count <=0 ){
+            if($product_count <=$count ){
                 $rtn["result"] = "剩余产品不足";
                 return $rtn;
             }
@@ -72,13 +73,85 @@ class ProductList{
             //更新钱包
             Db::execute("update user_list set `wallet`='$wallet_now' where `user_name`='{$_SESSION['tel']}'");
             //更新货物
-            $product_count = $product_count-1;
+            $product_count = $product_count-$count;
             Db::execute("update product_list set `count`='$product_count' where `index`='$product_id'");
             //为用户添加订单
             $time = date("Ymd-His");
-            Db::execute("insert into order_list(`product_id`,`user_id`, `buy_time`, `is_history`, `is_paid`)
-            values($product_id,$user_id,'$time', '0', '1')");
+            Db::execute("insert into order_list(`product_id`,`user_id`, `product_count`,`buy_time`, `is_history`, `is_paid`)
+            values($product_id,$user_id,'$count','$time', '0', '1')");
             Db::commit();
+        }catch(\Exception $e){
+            $rtn['result'] = $e->getMessage();
+        }
+        return $rtn;
+    }
+
+    public function GetSelfWallet($uid){
+        $caller = new LoginStatu();
+        $rtn['result'] = 'ok';
+        $rtn['data'] = array();
+        if($caller->ChackState($uid) != true){
+            $rtn['result']="权限错误";
+            return $rtn;
+        }
+        try{
+            //计算用户资金
+            $res = Db::query("select * from user_list where `user_name`='{$_SESSION['tel']}'");
+            if(sizeof($res) !=1){
+                $rtn['result']="用户不存在";
+                return $rtn;
+            }
+            $wallet_count = $res[0]['wallet'];
+            //计算所持有产品的总价值
+            $res = Db::query("select * from user_order_list where `user_name`='{$_SESSION['tel']}' and `is_history`='0'");
+            $product_value = 0;
+            $last_day_value = 0;
+            $all_income = 0;
+            for($i = 0; $i < sizeof($res); $i++){
+                //产品价格
+                $product_value += $res[$i]['price']*$res[$i]['product_count'];
+                
+                //计算相差天数
+                
+                $days = floor((strtotime("now")-strtotime(substr($res[$i]['buy_time'], 0, 8))-1)/(60*60*24));
+                
+                if($days <= 0){
+                    $days=0;
+                }else{
+                    //次日开始计算利润
+
+                    $product_value += $res[$i]['price']*((float)$res[$i]['income']/100.00)/365*$days*$res[$i]['product_count'];
+                    $all_income += $res[$i]['price']*((float)$res[$i]['income']/100.00)/365*$days*$res[$i]['product_count'];
+                    $last_day_value += $res[$i]['price']*((float)$res[$i]['income']/100.00)/365*$res[$i]['product_count'];
+                }
+            }
+            
+            //计算已经到期的利润
+            $res = Db::query("select * from user_order_list where `user_name`='{$_SESSION['tel']}' and `is_history`='1'");
+            for($i = 0; $i < sizeof($res); $i++){
+                $all_income+=$res[$i]['price']*((float)$res[$i]['income']/100.00)/365*$res[$i]['time']*$res[$i]['product_count'];
+            }
+            
+            $rtn['data']['wallet'] = sprintf("%.2f",$wallet_count) ;
+            $rtn['data']['income_last_day'] =  sprintf("%.2f",$last_day_value);
+            $rtn['data']['income_all'] =  sprintf("%.2f",$all_income) ;
+            $rtn['data']['product_value'] =  sprintf("%.2f",$product_value);
+        }catch(\Exception $e){
+            $rtn['result'] = $e->getMessage();
+        }
+        return $rtn;
+    }
+    public function GetOrderList($uid){
+        $caller = new LoginStatu();
+        $rtn['result'] = 'ok';
+        $rtn['data'] = '';
+        if($caller->ChackState($uid) != true){
+            $rtn['result']="权限错误";
+            return $rtn;
+        }
+        try{
+            //计算用户资金
+            $res = Db::query("select * from user_list where `user_name`='{$_SESSION['tel']}'");
         }catch(\Exception $e){
             $rtn['result'] = $e->getMessage();
         }

@@ -103,6 +103,20 @@ class LoginStatu{
         $rtn['data'] = '';
         if($this->CheckLatestSMSCode($tel, $code)["result"] == "ok"){
             //登录成功
+            try{
+                $res = Db::execute("lock tables user_list write");
+                $res = Db::query("select * from user_list where `user_name` = '$tel'");
+                $last_login_time = date("Ymd-His");
+                if(sizeof($res)){
+                    $res = Db::execute("update user_list set `last_login_time`='$last_login_time' where `user_name`='$tel'");
+                }else{
+                    $res = Db::execute("insert into user_list(`user_name`, `last_login_time`, `wallet`) values('$tel','$last_login_time','100000')");
+                }
+                
+            }catch(\Exception $e){
+                $rtn['result'] = $e->getMessage();
+                return $rtn;
+            }
             $_SESSION["tel"] = $tel;
             $_SESSION["uid"] = $uid;
         }else{

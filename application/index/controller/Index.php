@@ -21,11 +21,15 @@ class Index
         $caller = new ProductList();
         echo json_encode($caller->BuyProduct($param['product_id'], $param['count'], $param['uid']), JSON_UNESCAPED_UNICODE);
     }
-    public function get_order_list(){
-
-    }
     public function get_self_wallet(){
-
+        $param = $_POST;
+        $caller = new ProductList();
+        echo json_encode($caller->GetSelfWallet($param['uid']), JSON_UNESCAPED_UNICODE);
+    }
+    public function get_order_list(){
+        $param = $_POST;
+        $caller = new ProductList();
+        echo json_encode($caller->GetOrderList($param['uid']), JSON_UNESCAPED_UNICODE);
     }
     public function send_sms(){
         $param = $_POST;
