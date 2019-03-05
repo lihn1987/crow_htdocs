@@ -9,7 +9,7 @@ class ProductList{
         $rtn['result'] = 'ok';
         $rtn['data'] = '';
         try{
-            $sql_str="select * from product_list";
+            $sql_str="select * from product_list where `show`='1'";
 
             $page_start = $page_idx*$page_size;
             $sql_str .= " limit $page_start, $page_size";

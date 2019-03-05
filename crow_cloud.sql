@@ -11,7 +11,7 @@
  Target Server Version : 100136
  File Encoding         : 65001
 
- Date: 04/03/2019 20:01:35
+ Date: 05/03/2019 21:50:27
 */
 
 SET NAMES utf8mb4;
@@ -54,9 +54,14 @@ CREATE TABLE `product_list` (
   `title` varchar(255) DEFAULT NULL,
   `price` varchar(255) DEFAULT NULL,
   `income` varchar(255) DEFAULT NULL,
+  `count` varchar(255) DEFAULT NULL,
+  `count_ori` varchar(255) DEFAULT NULL,
+  `unit_count` varchar(255) DEFAULT NULL,
+  `unit` varchar(255) DEFAULT NULL,
+  `commit` varchar(255) DEFAULT NULL,
   `time` varchar(255) DEFAULT NULL,
   `is_history` varchar(255) DEFAULT NULL,
-  `count` varchar(255) DEFAULT NULL,
+  `show` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`index`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
@@ -64,10 +69,10 @@ CREATE TABLE `product_list` (
 -- Records of product_list
 -- ----------------------------
 BEGIN;
-INSERT INTO `product_list` VALUES (1, '3月期云养牛.太平洋承保', '8800', '10.88%', '90', '0', '994');
-INSERT INTO `product_list` VALUES (2, '6月期云养牛.太平洋承保', '8700', '10.88%', '180', '0', '1000');
-INSERT INTO `product_list` VALUES (3, '9月期云养牛.太平洋承保', '8600', '10.88%', '270', '0', '1000');
-INSERT INTO `product_list` VALUES (4, '12月期云养牛.太平洋承保', '8500', '10.88%', '360', '0', '1000');
+INSERT INTO `product_list` VALUES (1, '3月期云养牛.太平洋承保', '8800', '10.88%', '994', '1000', '1', '头', '第1期', '90', '0', '1');
+INSERT INTO `product_list` VALUES (2, '6月期云养牛.太平洋承保', '8700', '10.88%', '1000', '1000', '1', '头', '第1期', '180', '0', '1');
+INSERT INTO `product_list` VALUES (3, '9月期云养牛.太平洋承保', '8600', '10.88%', '1000', '1000', '1', '头', '第1期', '270', '0', '1');
+INSERT INTO `product_list` VALUES (4, '12月期云养牛.太平洋承保', '8500', '10.88%', '1000', '1000', '1', '头', '第1期', '360', '0', '1');
 COMMIT;
 
 -- ----------------------------
