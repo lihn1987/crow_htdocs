@@ -90,6 +90,7 @@ class ProductList{
         $caller = new LoginStatu();
         $rtn['result'] = 'ok';
         $rtn['data'] = array();
+        
         if($caller->ChackState($uid) != true){
             $rtn['result']="权限错误";
             return $rtn;
@@ -107,21 +108,20 @@ class ProductList{
             $product_value = 0;
             $last_day_value = 0;
             $all_income = 0;
+
+            $rtn['data']['product_item'] = $res;
             for($i = 0; $i < sizeof($res); $i++){
                 //产品价格
                 $product_value += $res[$i]['price']*$res[$i]['product_count'];
                 
                 //计算相差天数
                 
-                $days = floor((strtotime("now")-strtotime(substr($res[$i]['buy_time'], 0, 8))-1)/(60*60*24));
-                
+                $days = floor((strtotime("now")-strtotime(substr($res[$i]['buy_time'], 0, 8)))/(60*60*24))-1;
                 if($days <= 0){
                     $days=0;
                 }else{
-                    //次日开始计算利润
-
                     $product_value += $res[$i]['price']*((float)$res[$i]['income']/100.00)/365*$days*$res[$i]['product_count'];
-                    $all_income += $res[$i]['price']*((float)$res[$i]['income']/100.00)/365*$days*$res[$i]['product_count'];
+                    $all_income +=     $res[$i]['price']*((float)$res[$i]['income']/100.00)/365*$days*$res[$i]['product_count'];
                     $last_day_value += $res[$i]['price']*((float)$res[$i]['income']/100.00)/365*$res[$i]['product_count'];
                 }
             }
