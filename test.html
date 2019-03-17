@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+
+<h1>产品接口</h1>
+<hr/>
+<table style="width:100%">
+    <tr>
+        <th width=10%>函数名称</th>
+        <th width=20%>函数说明</th>
+        <th width=20%>函数参数</th>
+        <th width=20%>函数返回值</th>
+        <th width=10%> 操作</th>
+    </tr>
+    <tr>
+        <td>product_list_get</td>
+        <td>产品列表</td>
+        <td><textarea id="product_list_get_input" style="height:100px;width:100%"></textarea></td>
+        <td><textarea id="product_list_get_out" style="height:100px;width:100%"></textarea></td>
+        <td><button  id="product_list_get_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
+	</tr>
+	<tr>
+        <td>buy_product</td>
+        <td>购买产品</td>
+        <td><textarea id="buy_product_input" style="height:100px;width:100%"></textarea></td>
+        <td><textarea id="buy_product_out" style="height:100px;width:100%"></textarea></td>
+        <td><button  id="buy_product_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
+	</tr>
+	<tr>
+        <td>get_self_wallet</td>
+        <td>获取用户信息</td>
+        <td><textarea id="get_self_wallet_input" style="height:100px;width:100%"></textarea></td>
+        <td><textarea id="get_self_wallet_out" style="height:100px;width:100%"></textarea></td>
+        <td><button  id="get_self_wallet_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
+    </tr>
+</table>
+
+<h1>登录接口</h1>
+<hr/>
+<table style="width:100%">
+    <tr>
+        <th width=10%>函数名称</th>
+        <th width=20%>函数说明</th>
+        <th width=20%>函数参数</th>
+        <th width=20%>函数返回值</th>
+        <th width=10%> 操作</th>
+    </tr>
+    <tr>
+        <td>send_sms</td>
+        <td>发送验证码</td>
+        <td><textarea id="send_sms_input" style="height:100px;width:100%"></textarea></td>
+        <td><textarea id="send_sms_out" style="height:100px;width:100%"></textarea></td>
+        <td><button  id="send_sms_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
+	</tr>
+    <tr>
+        <td>check_last_sms_code</td>
+        <td>获取最后一个验证码</td>
+        <td><textarea id="check_last_sms_code_input" style="height:100px;width:100%"></textarea></td>
+        <td><textarea id="check_last_sms_code_out" style="height:100px;width:100%"></textarea></td>
+        <td><button  id="check_last_sms_code_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
+	</tr>
+	<tr>
+        <td>login</td>
+        <td>登录</td>
+        <td><textarea id="login_input" style="height:100px;width:100%"></textarea></td>
+        <td><textarea id="login_out" style="height:100px;width:100%"></textarea></td>
+        <td><button  id="login_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
+	</tr>
+	<tr>
+        <td>check_state</td>
+        <td>登录状态</td>
+        <td><textarea id="check_state_input" style="height:100px;width:100%"></textarea></td>
+        <td><textarea id="check_state_out" style="height:100px;width:100%"></textarea></td>
+        <td><button  id="check_state_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
+	</tr>
+	<tr>
+        <td>login_out</td>
+        <td>退出登录</td>
+        <td><textarea id="login_out_input" style="height:100px;width:100%"></textarea></td>
+        <td><textarea id="login_out_out" style="height:100px;width:100%"></textarea></td>
+        <td><button  id="login_out_operator" style="margin:10px;height:50px;width:80px">调用 </button></td>
+    </tr>
+</table>
+
+
+<script>
+
+    $().ready(function(){
+
+
+        $("#product_list_get_input").val(
+            '{\n'+
+			'   "page_idx":0,\n'+
+            '   "page_size":400\n'+
+            '}');
+        $("#product_list_get_operator").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/public/index/index/product_list_get",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: $.parseJSON($("#product_list_get_input").val()),
+                success: function(data){
+                    $("#product_list_get_out").val(data);
+                },
+                dataType: "text",
+                error: function (data) {
+                    $("#product_list_get_out").val("调用失败");
+                }
+            });
+        });
+//buy_product
+		$("#buy_product_input").val(
+            '{\n'+
+			'   "product_id":1,\n'+
+            '   "count":1,\n'+
+			'   "uid":123456\n'+
+            '}');
+        $("#buy_product_operator").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/public/index/index/buy_product",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: $.parseJSON($("#buy_product_input").val()),
+                success: function(data){
+                    $("#buy_product_out").val(data);
+                },
+                dataType: "text",
+                error: function (data) {
+                    $("#buy_product_out").val("调用失败");
+                }
+            });
+        });
+//
+		$("#get_self_wallet_input").val(
+            '{\n'+
+			'   "uid":123456\n'+
+            '}');
+        $("#get_self_wallet_operator").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/public/index/index/get_self_wallet",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: $.parseJSON($("#get_self_wallet_input").val()),
+                success: function(data){
+                    $("#get_self_wallet_out").val(data);
+                },
+                dataType: "text",
+                error: function (data) {
+                    $("#get_self_wallet_out").val("调用失败");
+                }
+            });
+        });
+		$("#send_sms_input").val(
+            '{\n'+
+			'   "tel":"18108192376"\n'+
+            '}');
+        $("#send_sms_operator").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/public/index/index/send_sms",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: $.parseJSON($("#send_sms_input").val()),
+                success: function(data){
+                    $("#send_sms_out").val(data);
+                },
+                dataType: "text",
+                error: function (data) {
+                    $("#send_sms_out").val("调用失败");
+                }
+            });
+        });
+		$("#check_last_sms_code_input").val(
+            '{\n'+
+			'   "tel":"18108192376",\n'+
+			'   "code":"697537"\n'+
+            '}');
+        $("#check_last_sms_code_operator").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/public/index/index/check_last_sms_code",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: $.parseJSON($("#check_last_sms_code_input").val()),
+                success: function(data){
+                    $("#check_last_sms_code_out").val(data);
+                },
+                dataType: "text",
+                error: function (data) {
+                    $("#check_last_sms_code_out").val("调用失败");
+                }
+            });
+        });
+		$("#login_input").val(
+            '{\n'+
+			'   "tel":"18108192376",\n'+
+			'   "code":"697537",\n'+
+			'   "uid":"123456"\n'+
+            '}');
+        $("#login_operator").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/public/index/index/login",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: $.parseJSON($("#login_input").val()),
+                success: function(data){
+                    $("#login_out").val(data);
+                },
+                dataType: "text",
+                error: function (data) {
+                    $("#login_out").val("调用失败");
+                }
+            });
+        });
+/*
+        <td></td>
+        <td></td>
+        <td>login_out</td>*/
+		$("#check_state_input").val(
+            '{\n'+
+			'   "uid":"123456"\n'+
+            '}');
+        $("#check_state_operator").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/public/index/index/check_state",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: $.parseJSON($("#check_state_input").val()),
+                success: function(data){
+                    $("#check_state_out").val(data);
+                },
+                dataType: "text",
+                error: function (data) {
+                    $("#check_state_out").val("调用失败");
+                }
+            });
+        });
+		$("#login_out_input").val(
+            '{\n'+
+            '}');
+        $("#login_out_operator").click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/public/index/index/login_out",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                data: $.parseJSON($("#login_out_input").val()),
+                success: function(data){
+                    $("#login_out_out").val(data);
+                },
+                dataType: "text",
+                error: function (data) {
+                    $("#login_out_out").val("调用失败");
+                }
+            });
+        });
+
+
+    });
+    </script>
+</body>
+</html>
