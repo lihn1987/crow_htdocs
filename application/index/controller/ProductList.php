@@ -136,6 +136,7 @@ class ProductList{
             $rtn['data']['income_last_day'] =  sprintf("%.2f",$last_day_value);
             $rtn['data']['income_all'] =  sprintf("%.2f",$all_income) ;
             $rtn['data']['product_value'] =  sprintf("%.2f",$product_value);
+            $rtn['data']['username'] =  $_SESSION['tel'];
         }catch(\Exception $e){
             $rtn['result'] = $e->getMessage();
         }

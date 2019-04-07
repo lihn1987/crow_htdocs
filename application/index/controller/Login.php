@@ -110,7 +110,7 @@ class LoginStatu{
                 if(sizeof($res)){
                     $res = Db::execute("update user_list set `last_login_time`='$last_login_time' where `user_name`='$tel'");
                 }else{
-                    $res = Db::execute("insert into user_list(`user_name`, `last_login_time`, `wallet`) values('$tel','$last_login_time','100000')");
+                    $res = Db::execute("insert into user_list(`user_name`, `last_login_time`, `wallet`) values('$tel','$last_login_time','0')");
                 }
                 
             }catch(\Exception $e){

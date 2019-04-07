@@ -39,9 +39,9 @@
         }
     }
     .sub-btn{
-		background-image: -moz-linear-gradient( 0deg, rgb(188,43,255) 0%, rgb(114,73,251) 100%);
-		background-image: -webkit-linear-gradient( 0deg, rgb(188,43,255) 0%, rgb(114,73,251) 100%);
-		background-image: -ms-linear-gradient( 0deg, rgb(188,43,255) 0%, rgb(114,73,251) 100%);
+		background-image: -moz-linear-gradient( 0deg, rgb(250,172,74) 0%, rgb(240,125,45) 100%);
+		background-image: -webkit-linear-gradient( 0deg, rgb(250,172,74) 0%, rgb(240,125,45) 100%);
+		background-image: -ms-linear-gradient( 0deg, rgb(250,172,74) 0%, rgb(240,125,45) 100%);
         color: #fff;
         font-weight: 500;
         line-height: 38px;
@@ -147,9 +147,9 @@
 			@include transition;
             &:hover{
                 color: #fff;
-				background-image: -moz-linear-gradient( 0deg, rgba(188,43,255,.8) 0%, rgba(114,73,251,.8) 100%);
-				background-image: -webkit-linear-gradient( 0deg, rgba(188,43,255,.8) 0%, rgba(114,73,251,.8) 100%);
-				background-image: -ms-linear-gradient( 0deg, rgba(188,43,255,.8) 0%, rgba(114,73,251,.8) 100%);
+				background-image: -moz-linear-gradient( 0deg, rgba(250,172,74,.8) 0%, rgba(240,125,45,.8) 100%);
+				background-image: -webkit-linear-gradient( 0deg, rgba(250,172,74,.8) 0%, rgba(240,125,45,.8) 100%);
+				background-image: -ms-linear-gradient( 0deg, rgba(250,172,74,.8) 0%, rgba(240,125,45,.8) 100%);
             }
         }
     }
